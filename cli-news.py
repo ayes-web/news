@@ -6,9 +6,9 @@ sites = [
 ]
 i = 0
 for x in sites[1]:
-  print("Site "+ str(i) + ": " + x)
+  print('Site '+ str(i) + ': ' + x)
   i += 1
-siteNumber = int(input("Choose site: "))
+siteNumber = int(input('Choose site: '))
 if siteNumber > len(sites[0]):
 	print("That site doesn't exist!")
 	quit()
@@ -17,18 +17,23 @@ print(sites[0][siteNumber])
 res = requests.get(sites[0][siteNumber])
 res.raise_for_status()
 soup = bs4.BeautifulSoup(res.text, 'html.parser')
-print(" ")
+print(' ')
 
 i = 0
 
 if siteNumber == 0:
-	title = soup.find_all("a", class_="storylink")
-	link = [a['href'] for a in soup.find_all('a', class_="storylink", href=True) if a.text]
-	rank = soup.find_all("span", class_="rank")
+	points = soup.find_all('', class_='score')
+	commentLink = [a['href'] for a in soup.select('td.subtext > a:nth-child(6)', class_='subtext') if a.text]
+	commentNumber = soup.select('td.subtext > a:nth-child(6)', class_='subtext')
+
+	title = soup.find_all('a', class_='storylink')
+	link = [a['href'] for a in soup.find_all('a', class_='storylink', href=True) if a.text]
+	rank = soup.find_all('span', class_='rank')
 	g = len(title)
 	while i < g:
 		print(rank[i].text.strip() + ' ' + title[i].text.strip())
 		print(link[i])
+		print(points[i].text.strip() + ' | '+ commentNumber[i].text.strip()+ ': https://news.ycombinator.com/' + commentLink[i])
 		print(' ')
 		i += 1
 elif siteNumber == 1:
