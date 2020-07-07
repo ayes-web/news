@@ -1,2 +1,3 @@
-# news
-Gets news from news sites
+# News
+Grabs news from news sites.
+Trying to make a better version of thenews.im
